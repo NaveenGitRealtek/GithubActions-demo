@@ -24,8 +24,7 @@ jobs:
 
     - name: Build the Go app
       run: |
-        go mod init my-go-app
-        go build -o my-go-app
+        go build main.go
 
     - name: Log in to Docker Hub
       uses: docker/login-action@v2
