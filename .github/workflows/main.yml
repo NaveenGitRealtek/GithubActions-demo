@@ -34,7 +34,7 @@ jobs:
 
     - name: Build and tag the Docker image
       run: |
-        docker build . -t my-go-app:latest
+        docker build -t my-go-app:latest .
         docker tag my-go-app:latest ${{ secrets.DOCKER_USERNAME }}/my-go-app:latest
 
     - name: Push the Docker image
