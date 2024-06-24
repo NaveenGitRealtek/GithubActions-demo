@@ -26,7 +26,7 @@ jobs:
       run: |
         go build main.go
 
-    - name: Log in to Docker hub
+    - name: Log in to Docker Hub
       uses: docker/login-action@v2
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
