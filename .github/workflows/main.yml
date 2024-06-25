@@ -39,7 +39,7 @@ jobs:
         echo "VERSION=${VERSION}" >> $GITHUB_ENV
         echo "::set-output name=version::$VERSION"
 
-    - name: Build and tag the Docker Image
+    - name: Build and tag the Docker image
       run: |
         docker build -t my-go-app:${{ steps.version.outputs.version }} .
         docker tag my-go-app:${{ steps.version.outputs.version }} ${{ secrets.DOCKER_USERNAME }}/my-go-app:${{ steps.version.outputs.version }}
