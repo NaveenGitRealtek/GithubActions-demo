@@ -33,16 +33,17 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Get version number
+      id: version
       run: |
-        chmod +x ./get_version.sh
-        export IMAGE_VERSION=$(./get_version.sh)
-        echo "IMAGE_VERSION=${IMAGE_VERSION}" >> $GITHUB_ENV
+        VERSION=$(./get_version.sh)
+        echo "VERSION=${VERSION}" >> $GITHUB_ENV
+        echo "::set-output name=version::$VERSION"
 
     - name: Build and tag the Docker image
       run: |
-        docker build -t my-go-app:${{ env.IMAGE_VERSION }} .
-        docker tag my-go-app:${{ env.IMAGE_VERSION }} ${{ secrets.DOCKER_USERNAME }}/my-go-app:${{ env.IMAGE_VERSION }}
+        docker build -t my-go-app:${{ steps.version.outputs.version }} .
+        docker tag my-go-app:${{ steps.version.outputs.version }} ${{ secrets.DOCKER_USERNAME }}/my-go-app:${{ steps.version.outputs.version }}
 
     - name: Push the Docker image
       run: |
-        docker push ${{ secrets.DOCKER_USERNAME }}/my-go-app:${{ env.IMAGE_VERSION }}
+        docker push ${{ secrets.DOCKER_USERNAME }}/my-go-app:${{ steps.version.outputs.version }}
