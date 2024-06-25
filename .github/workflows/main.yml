@@ -34,12 +34,12 @@ jobs:
 
     - name: Build and tag the Docker Image
       run: |
-        IMAGE_VERSION=$(printf "%02d" ${{ github.run_number }})
+        IMAGE_VERSION=$(printf "%03d" ${{ github.run_number }})
         docker build -t my-go-app:${IMAGE_VERSION} .
         docker tag my-go-app:${IMAGE_VERSION} ${{ secrets.DOCKER_USERNAME }}/my-go-app:${IMAGE_VERSION}
 
     - name: Push the Docker image
       run: |
-        IMAGE_VERSION=$(printf "%02d" ${{ github.run_number }})
+        IMAGE_VERSION=$(printf "%03d" ${{ github.run_number }})
         docker push ${{ secrets.DOCKER_USERNAME }}/my-go-app:${IMAGE_VERSION}
 
