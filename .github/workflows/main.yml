@@ -10,7 +10,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -46,3 +45,11 @@ jobs:
     - name: Push the Docker image
       run: |
         docker push ${{ secrets.DOCKER_USERNAME }}/my-go-app:${{ env.IMAGE_VERSION }}
+
+    - name: Commit updated version
+      run: |
+        git config --global user.email "action@github.com"
+        git config --global user.name "GitHub Action"
+        git add VERSION
+        git commit -m "Increment version to ${{ env.IMAGE_VERSION }}"
+        git push
