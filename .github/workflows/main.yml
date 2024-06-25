@@ -34,9 +34,12 @@ jobs:
 
     - name: Build and tag the Docker image
       run: |
-        docker build -t my-go-app:latest .
-        docker tag my-go-app:latest ${{ secrets.DOCKER_USERNAME }}/my-go-app:latest
+        IMAGE_VERSION=$(printf "%02d" ${{ github.run_number }})
+        docker build -t my-go-app:${IMAGE_VERSION} .
+        docker tag my-go-app:${IMAGE_VERSION} ${{ secrets.DOCKER_USERNAME }}/my-go-app:${IMAGE_VERSION}
 
     - name: Push the Docker image
       run: |
-        docker push ${{ secrets.DOCKER_USERNAME }}/my-go-app:latest
+        IMAGE_VERSION=$(printf "%02d" ${{ github.run_number }})
+        docker push ${{ secrets.DOCKER_USERNAME }}/my-go-app:${IMAGE_VERSION}
+
