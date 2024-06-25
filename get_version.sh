@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# Assuming $GITHUB_RUN_NUMBER contains the GitHub Actions run number
-
 # Define the version file path
 version_file="version.txt"
 
@@ -28,5 +26,5 @@ next_version="V$major.$minor.$next_patch"
 # Store the next version in the version file
 echo "$next_version" > "$version_file"
 
-# Print the version for debugging or further use
+# Output the next version for use in GitHub Actions
 echo "$next_version"
