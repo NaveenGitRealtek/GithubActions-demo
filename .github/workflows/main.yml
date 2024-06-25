@@ -38,7 +38,7 @@ jobs:
         export IMAGE_VERSION=$(./get_version.sh)
         echo "IMAGE_VERSION=${IMAGE_VERSION}" >> $GITHUB_ENV
 
-    - name: Build and tag the Docker image
+    - name: Build and tag the Docker Image
       run: |
         docker build -t my-go-app:${{ env.IMAGE_VERSION }} .
         docker tag my-go-app:${{ env.IMAGE_VERSION }} ${{ secrets.DOCKER_USERNAME }}/my-go-app:${{ env.IMAGE_VERSION }}
