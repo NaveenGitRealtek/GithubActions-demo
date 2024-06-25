@@ -1,14 +1,14 @@
 #!/bin/bash
 
-# Get the GitHub Actions run number
-RUN_NUMBER=$GITHUB_RUN_NUMBER
+# Define the version tag
+VERSION="V0.0.13"
 
-# Calculate major, minor, and patch versions
-MAJOR=$((RUN_NUMBER / 10000))
-MINOR=$(((RUN_NUMBER / 100) % 100))
-PATCH=$((RUN_NUMBER % 100))
+# Build Docker image
+docker build -t my-go-app:$VERSION .
 
-# Format the version as V x.y.z
-VERSION=$(printf "V %d.%d.%d" $MAJOR $MINOR $PATCH)
-echo $VERSION
+# Tag Docker image
+docker tag my-go-app:$VERSION ***/*/my-go-app:$VERSION
+
+# Push Docker image
+docker push ***/*/my-go-app:$VERSION
 
