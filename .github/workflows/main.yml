@@ -42,8 +42,11 @@ jobs:
         chmod +x ./update_version.sh
         export IMAGE_VERSION=$(./update_version.sh)
         echo "IMAGE_VERSION=${IMAGE_VERSION}" >> $GITHUB_ENV
+      shell: /usr/bin/bash -e {0}
 
     - name: Commit updated version file
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         git config --global user.name 'github-actions'
         git config --global user.email 'github-actions@github.com'
