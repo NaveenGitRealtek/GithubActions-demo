@@ -1,25 +1,24 @@
 #!/bin/bash
 
-# Read the current version from the VERSION file
-if [ ! -f VERSION ]; then
-  echo "V0.0.0" > VERSION
+# Read the current version from version.txt
+if [ ! -f version.txt ]; then
+    echo "0.0.1" > version.txt
 fi
 
-VERSION=$(cat VERSION)
+CURRENT_VERSION=$(cat version.txt)
 
-# Extract the current version numbers
-MAJOR=$(echo $VERSION | cut -d'.' -f1 | cut -d'V' -f2)
-MINOR=$(echo $VERSION | cut -d'.' -f2)
-PATCH=$(echo $VERSION | cut -d'.' -f3)
+# Split the version into its components
+IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT_VERSION"
 
-# Increment the patch version
+# Increment the PATCH version
 PATCH=$((PATCH + 1))
 
-# Create the new version string
-NEW_VERSION="V${MAJOR}.${MINOR}.${PATCH}"
+# Form the new version string
+NEW_VERSION="${MAJOR}.${MINOR}.${PATCH}"
 
-# Write the new version back to the VERSION file
-echo $NEW_VERSION > VERSION
+# Update the version.txt with the new version
+echo $NEW_VERSION > version.txt
 
-# Output the new version
+# Print the new version for use in the workflow
 echo $NEW_VERSION
+
