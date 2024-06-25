@@ -26,7 +26,7 @@ jobs:
       run: |
         go build main.go
 
-    - name: Log in to Docker hub
+    - name: Log in to Docker Hub
       uses: docker/login-action@v2
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
@@ -38,7 +38,7 @@ jobs:
         export IMAGE_VERSION=$(./get_version.sh)
         echo "IMAGE_VERSION=${IMAGE_VERSION}" >> $GITHUB_ENV
 
-    - name: Build and tag the Docker Image
+    - name: Build and tag the Docker image
       run: |
         docker build -t my-go-app:${{ env.IMAGE_VERSION }} .
         docker tag my-go-app:${{ env.IMAGE_VERSION }} ${{ secrets.DOCKER_USERNAME }}/my-go-app:${{ env.IMAGE_VERSION }}
@@ -46,4 +46,3 @@ jobs:
     - name: Push the Docker image
       run: |
         docker push ${{ secrets.DOCKER_USERNAME }}/my-go-app:${{ env.IMAGE_VERSION }}
-
