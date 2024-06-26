@@ -44,7 +44,7 @@ jobs:
         docker build -t my-go-app:${{ steps.version.outputs.version }} .
         docker tag my-go-app:${{ steps.version.outputs.version }} ${{ secrets.DOCKER_USERNAME }}/my-go-app:${{ steps.version.outputs.version }}
 
-    - name: Push the Docker image
+    - name: Push the Docker Image
       run: |
         docker push ${{ secrets.DOCKER_USERNAME }}/my-go-app:${{ steps.version.outputs.version }}
 
