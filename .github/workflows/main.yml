@@ -1,86 +1,48 @@
-# name: Build and Push Docker image
-
-# on:
-#   push:
-#     branches:
-#       - main
-#   pull_request:
-#     branches:
-#       - main
-
-# jobs:
-#   build:
-
-#     runs-on: ubuntu-latest
-
-#     steps:
-#     - name: Checkout code
-#       uses: actions/checkout@v2
-
-#     - name: Set up Go
-#       uses: actions/setup-go@v3
-#       with:
-#         go-version: 1.18
-
-#     - name: Build the Go app
-#       run: |
-#         go build main.go
-
-#     - name: Log in to Docker Hub
-#       uses: docker/login-action@v2
-#       with:
-#         username: ${{ secrets.DOCKER_USERNAME }}
-#         password: ${{ secrets.DOCKER_PASSWORD }}
-
-#     - name: Get version number
-#       id: version
-#       run: |
-#         VERSION=$(./get_version.sh)
-#         echo "VERSION=${VERSION}" >> $GITHUB_ENV
-#         echo "::set-output name=version::$VERSION"
-
-#     - name: Build and tag the Docker Image
-#       run: |
-#         docker build -t my-go-app:${{ steps.version.outputs.version }} .
-#         docker tag my-go-app:${{ steps.version.outputs.version }} ${{ secrets.DOCKER_USERNAME }}/my-go-app:${{ steps.version.outputs.version }}
-
-#     - name: Push the Docker Image
-#       run: |
-#         docker push ${{ secrets.DOCKER_USERNAME }}/my-go-app:${{ steps.version.outputs.version }}
-
-name: CI/CD
+name: Build and Push Docker image
 
 on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build:
+
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.18
 
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+    - name: Build the Go app
+      run: |
+        go build main.go
 
-      - name: Get current version
-        id: get_version
-        run: |
-          VERSION=$(./get_version.sh)
-          echo "VERSION=${VERSION}" >> $GITHUB_ENV
-          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Output current version
-        run: echo "Current version is ${{ steps.get_version.outputs.version }}"
+    - name: Get version number
+      run: |
+        chmod +x ./get_version.sh
+        export IMAGE_VERSION=$(./get_version.sh)
+        echo "IMAGE_VERSION=${IMAGE_VERSION}" >> $GITHUB_ENV
 
-      # Add other steps like building and pushing the Docker image here
-      # You can access the current version using ${{ env.VERSION }} or ${{ steps.get_version.outputs.version }}
+    - name: Build and tag the Docker image
+      run: |
+        docker build -t my-go-app:${{ env.IMAGE_VERSION }} .
+        docker tag my-go-app:${{ env.IMAGE_VERSION }} ${{ secrets.DOCKER_USERNAME }}/my-go-app:${{ env.IMAGE_VERSION }}
+
+    - name: Push the Docker image
+      run: |
+        docker push ${{ secrets.DOCKER_USERNAME }}/my-go-app:${{ env.IMAGE_VERSION }}
