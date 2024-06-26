@@ -74,13 +74,8 @@ else
   current_version=$(echo "$latest_tag" | grep -o '[0-9]\+\.[0-9]\+\.[0-9]\+')
 fi
 
-echo "Current version: $current_version"
-
 # Determine the type of version bump based on commit messages
 commit_messages=$(git log $latest_tag..HEAD --oneline 2>/dev/null)
-
-echo "Commit messages since latest tag:"
-echo "$commit_messages"
 
 # Default version bump type is PATCH
 version_bump="PATCH"
@@ -92,15 +87,11 @@ elif echo "$commit_messages" | grep -E 'MINOR:'; then
   version_bump="MINOR"
 fi
 
-echo "Determined version bump type: $version_bump"
-
 # Split current version into MAJOR, MINOR, PATCH parts
 IFS='.' read -r -a version_parts <<< "${current_version:1}" # Remove 'v' prefix
 major="${version_parts[0]}"
 minor="${version_parts[1]}"
 patch="${version_parts[2]}"
-
-echo "Current version parts - Major: $major, Minor: $minor, Patch: $patch"
 
 # Increment the appropriate version part based on version bump type
 case "$version_bump" in
@@ -121,8 +112,8 @@ esac
 # Construct the new version string
 new_version="v${major}.${minor}.${patch}"
 
-echo "New version: $new_version"
-
+# Output the new version only
 echo "$new_version"
+
 
 
