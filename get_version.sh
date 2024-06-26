@@ -117,9 +117,6 @@
 
 #!/bin/bash
 
-# Usage: ./update_version.sh [major|minor|patch]
-# Example: ./update_version.sh minor
-
 # Docker image details
 DOCKER_USER="naveen775"
 IMAGE_NAME="my-go-app"
@@ -127,39 +124,5 @@ IMAGE_NAME="my-go-app"
 # Retrieve the current version from Docker Hub
 CURRENT_VERSION=$(curl -s "https://hub.docker.com/v2/repositories/$DOCKER_USER/$IMAGE_NAME/tags" | jq -r '.results[].name' | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | sort -V | tail -n 1)
 
-# Parse the current version
-IFS='.' read -r -a VERSION_PARTS <<< "${CURRENT_VERSION#v}"
-
-# Increment the version based on the input argument
-case $1 in
-  major)
-    VERSION_PARTS[0]=$((VERSION_PARTS[0] + 1))
-    VERSION_PARTS[1]=0
-    VERSION_PARTS[2]=0
-    ;;
-  minor)
-    VERSION_PARTS[1]=$((VERSION_PARTS[1] + 1))
-    VERSION_PARTS[2]=0
-    ;;
-  patch)
-    VERSION_PARTS[2]=$((VERSION_PARTS[2] + 1))
-    ;;
-  *)
-    echo "Usage: $0 [major|minor|patch]"
-    exit 1
-    ;;
-esac
-
-# Construct the new version
-NEW_VERSION="v${VERSION_PARTS[0]}.${VERSION_PARTS[1]}.${VERSION_PARTS[2]}"
-
-# Build and tag the new Docker image
-docker build -t $DOCKER_USER/$IMAGE_NAME:$NEW_VERSION .
-
-# Push the new Docker image to Docker Hub
-docker push $DOCKER_USER/$IMAGE_NAME:$NEW_VERSION
-
-# Output the new version
-echo "Updated Docker image version to $NEW_VERSION"
-
-
+# Output the current version
+echo $CURRENT_VERSION
