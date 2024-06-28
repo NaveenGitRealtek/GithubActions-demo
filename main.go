@@ -1,10 +1,17 @@
 package main
 
-import "fmt"
+import (
+    "fmt"
+    "net/http"
+)
+
+func handler(w http.ResponseWriter, r *http.Request) {
+    fmt.Fprintf(w, "Hello, World!!!!")
+    fmt.Fprintf(w,  " Hey Docker-Hub Iam Here.0")
+    fmt.Fprintf(w,  "Hello Bye....")
+}
 
 func main() {
-    fmt.Println("Hello, World Here ")
-    fmt.Println("Hi")
-    fmt.Println("Hello")
-    fmt.Println("DockerHub>>>>>>>>>>>>>>>>>")
+    http.HandleFunc("/", handler)
+    http.ListenAndServe(":8080", nil)
 }
