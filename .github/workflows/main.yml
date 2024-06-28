@@ -36,7 +36,7 @@ jobs:
     - name: Automatic Tagging of Releases
       id: increment-git-tag
       run: |
-        bash ./version.sh -v patch
+        bash .build/version.sh -v patch
       continue-on-error: false
 
     - name: Build, Tag, and Push the Image to Docker Hub
