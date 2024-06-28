@@ -42,9 +42,9 @@ jobs:
 
     - name: Build and tag the Docker image
       run: |
-        docker build -t my-go-app1:${{ env.IMAGE_VERSION }} .
-        docker tag my-go-app1:${{ env.IMAGE_VERSION }} ${{ secrets.DOCKER_USERNAME }}/my-go-app1:${{ env.IMAGE_VERSION }}
+        docker build -t my-go-app:${{ env.IMAGE_VERSION }} .
+        docker tag my-go-app:${{ env.IMAGE_VERSION }} ${{ secrets.DOCKER_USERNAME }}/my-go-app:${{ env.IMAGE_VERSION }}
 
     - name: Push the Docker image
       run: |
-        docker push ${{ secrets.DOCKER_USERNAME }}/my-go-app1:${{ env.IMAGE_VERSION }}
+        docker push ${{ secrets.DOCKER_USERNAME }}/my-go-app:${{ env.IMAGE_VERSION }}
