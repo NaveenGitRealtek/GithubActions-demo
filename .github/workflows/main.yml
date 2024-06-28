@@ -36,7 +36,7 @@ jobs:
     - name: Automatic Tagging of Releases
       id: increment-git-tag
       run: |
-        bash ./build/version.sh -v patch
+        bash ./build/version.sh -v major
       continue-on-error: false
 
     - name: Build, Tag, and Push the Image to Docker Hub
@@ -46,3 +46,4 @@ jobs:
       run: |
         docker build -t ${{ secrets.DOCKER_USERNAME }}/my-go-app:$IMAGE_TAG .
         docker push ${{ secrets.DOCKER_USERNAME }}/my-go-app:$IMAGE_TAG
+
