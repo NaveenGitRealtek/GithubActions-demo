@@ -44,14 +44,14 @@ COPY . .
 # Build the Go app
 RUN go build -o main .
 
-# Use a smaller image for the final build
-FROM gcr.io/distroless/base-debian10
+# # Use a smaller image for the final build
+# FROM gcr.io/distroless/base-debian10
 
-# Copy the binary from the builder stage
-COPY --from=builder /app/main /main
+# # Copy the binary from the builder stage
+# COPY --from=builder /app/main /main
 
-# Expose port 8080 to the outside world
-EXPOSE 8080
+# # Expose port 8080 to the outside world
+# EXPOSE 8080
 
 # Command to run the executable
 CMD ["/main"]
